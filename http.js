@@ -7,19 +7,27 @@ var nfHTML = "404.html"; //Not Found HTML File
 function getLastTextNum(text, symbol) {
     var num = 0;
     var curNum = 0;
-    for (let a = 0; a < text.length; a++) {
-        if (text[a] == symbol) num++, curNum = 0;
-        else num++, curNum++;
+    for (let a = 0; a < text.length; ++a) {
+        if (text[a] == symbol) ++num, curNum = 0;
+        else ++num, ++curNum;
     }
     return num - curNum;
 }
 
+function removeDuplicate(text, symbol) {
+    var alreadyUsed = false
+    var result = ""
+    for (let a = 0; a < text.length; ++a) {
+        if (text[a] == symbol) {
+            if (!alreadyUsed) alreadyUsed = true, result += text[a]
+        } else alreadyUsed = false, result += text[a]
+    }
+    return result;
+}
+
 http.createServer(function(req, res) {
-    req.alreadyExistSlash = false
-    req.streamFile = "";
-    req.url = req.url.replace("/", "")
     if (!req.url) req.url = "index.html"
-    req.url = req.url.replace(/%20/g, " ")
+    req.url = removeDuplicate(req.url, "/").replace("/", "").replace(/%20/g, " ") // Fix url already use /, Example = http://127.0.0.1////nameFolder/nameFile.html
     if (req.url[req.url.length - 1] == '/') req.url = req.url + "index.html" // Auto direct index.html, Example = http://127.0.0.1/ and it will direct to index.html
     try {
         req.streamFile = fs.readFileSync(req.url)
