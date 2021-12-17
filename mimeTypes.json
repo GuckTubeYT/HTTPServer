@@ -5,10 +5,14 @@
     "txt": "text/plain",
     "wav": "audio/wav",
     "weba": "audio/webm",
+    "midi": "audio/x-midi",
+    "mid": "audio/midi",
     "png": "image/png",
     "jpeg": "image/jpeg",
     "jpg": "image/jpg",
+    "3gp": "video/3gpp",
     "woff": "font/woff",
     "ttf": "font/ttf",
+    "xml": "application/xml",
     "unkMimeType": "application/octet-stream"
 }
