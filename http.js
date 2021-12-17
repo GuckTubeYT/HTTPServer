@@ -5,7 +5,6 @@ const { runInNewContext } = require("vm");
 var mimeTypes = require("./mimeTypes.json") // Mime Type
 var nfHTML = "404.html"; //Not Found HTML File
 var listingDir = true; // Listing directory, to enable the listing directoy, change it to true
-
 __dirname = __dirname.replace(/\\/g, "/")
 
 function getLastTextNum(text, symbol) {
@@ -46,9 +45,9 @@ http.createServer(function(req, res) {
                     return res.end();
                 }
                 req.readDir = fs.readdirSync(__dirname + "/" + req.url.slice(0, getLastTextNum(req.url, "/")))
-                req.listingDir = "<ul>"
+                req.listingDir = `<h1>Directory listing for /${req.url.slice(0, getLastTextNum(req.url, "/"))}</h1><hr/><ul>`
                 for (let a = 0; a < req.readDir.length; ++a) req.listingDir += `<li><a href="${req.readDir[a]}">${req.readDir[a]}</a></li>`
-                req.listingDir += "</ul>"
+                req.listingDir += "</ul><hr/>"
                 res.writeHead(200, { "Content-Type": "text/html" })
                 return res.end(req.listingDir)
             } else if (!fs.existsSync(nfHTML)) {
