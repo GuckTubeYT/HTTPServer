@@ -4,7 +4,7 @@ const { runInNewContext } = require("vm");
 
 var mimeTypes = require("./mimeTypes.json") // Mime Type
 var nfHTML = "404.html"; //Not Found HTML File
-var listingDir = false; // Listing directory, to enable the listing directoy, change it to true [BETA]
+var listingDir = true; // Listing directory, to enable the listing directoy, change it to true
 
 __dirname = __dirname.replace(/\\/g, "/")
 
@@ -37,7 +37,7 @@ http.createServer(function(req, res) {
         req.streamFile = fs.readFileSync(req.url)
     } catch (e) {
         if (e.code === "EISDIR") {
-            res.writeHead(302, { 'Location': req.url + '/' });
+            res.writeHead(302, { 'Location': req.url.slice(getLastTextNum(req.url, "/")) + "/" });
             return res.end();
         } else if (e.code === "ENOENT") {
             if (listingDir) {
