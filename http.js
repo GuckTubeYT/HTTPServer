@@ -1,8 +1,12 @@
 const fs = require("fs")
-const http = require("http")
+const http = require("http");
+const { runInNewContext } = require("vm");
 
 var mimeTypes = require("./mimeTypes.json") // Mime Type
 var nfHTML = "404.html"; //Not Found HTML File
+var listingDir = false; // Listing directory, to enable the listing directoy, change it to true [BETA]
+
+__dirname = __dirname.replace(/\\/g, "/")
 
 function getLastTextNum(text, symbol) {
     var num = 0;
@@ -36,7 +40,18 @@ http.createServer(function(req, res) {
             res.writeHead(302, { 'Location': req.url + '/' });
             return res.end();
         } else if (e.code === "ENOENT") {
-            if (!fs.existsSync(nfHTML)) {
+            if (listingDir) {
+                if (!fs.existsSync(__dirname + "/" + req.url.slice(0, getLastTextNum(req.url, "/")))) {
+                    res.writeHead(404)
+                    return res.end();
+                }
+                req.readDir = fs.readdirSync(__dirname + "/" + req.url.slice(0, getLastTextNum(req.url, "/")))
+                req.listingDir = "<ul>"
+                for (let a = 0; a < req.readDir.length; ++a) req.listingDir += `<li><a href="${req.readDir[a]}">${req.readDir[a]}</a></li>`
+                req.listingDir += "</ul>"
+                res.writeHead(200, { "Content-Type": "text/html" })
+                return res.end(req.listingDir)
+            } else if (!fs.existsSync(nfHTML)) {
                 res.writeHead(404)
                 return res.end()
             }
