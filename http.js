@@ -15,23 +15,17 @@ function getLastTextNum(text, symbol) {
 }
 
 http.createServer(function(req, res) {
-    req.directory = ""
     req.alreadyExistSlash = false
     req.streamFile = "";
     req.url = req.url.replace("/", "")
     if (!req.url) req.url = "index.html"
-    for (let a = 0; a < req.url.length; a++) {
-        if (req.url[a] == '/' && !req.alreadyExistSlash) req.directory += req.url[a], req.alreadyExistSlash = true;
-        else if (req.url[a] == '/' && req.alreadyExistSlash) req.alreadyExistSlash = true;
-        else req.alreadyExistSlash = false, req.directory += req.url[a]
-    } // Fix url already use /, Example = http://127.0.0.1////nameFolder/nameFile.html
-    req.directory = req.directory.replace(/%20/g, " ")
-    if (req.directory[req.directory.length - 1] == '/') req.directory = req.directory + "index.html" // Auto direct index.html, Example = http://127.0.0.1/ and it will direct to index.html
+    req.url = req.url.replace(/%20/g, " ")
+    if (req.url[req.url.length - 1] == '/') req.url = req.url + "index.html" // Auto direct index.html, Example = http://127.0.0.1/ and it will direct to index.html
     try {
-        req.streamFile = fs.readFileSync(req.directory)
+        req.streamFile = fs.readFileSync(req.url)
     } catch (e) {
         if (e.code === "EISDIR") {
-            res.writeHead(302, { 'Location': req.directory + '/' });
+            res.writeHead(302, { 'Location': req.url + '/' });
             return res.end();
         } else if (e.code === "ENOENT") {
             if (!fs.existsSync(nfHTML)) {
@@ -43,7 +37,7 @@ http.createServer(function(req, res) {
             return res.end(req.streamFile)
         }
     }
-    res.writeHead(200, { "Content-Type": mimeTypes[req.directory.slice(getLastTextNum(req.directory, "."))] || mimeTypes["unkMimeType"] })
+    res.writeHead(200, { "Content-Type": mimeTypes[req.url.slice(getLastTextNum(req.url, "."))] || mimeTypes["unkMimeType"] })
     return res.end(req.streamFile)
 }).listen(80)
 
