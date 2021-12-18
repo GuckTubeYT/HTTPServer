@@ -55,11 +55,11 @@ http.createServer(function(req, res) {
                 return res.end()
             }
             req.streamFile = fs.readFileSync(nfHTML)
-            res.writeHead(404, { "Content-Type": mimeTypes[nfHTML.slice(getLastTextNum(nfHTML, "."))] || mimeTypes["unkMimeType"] })
+            res.writeHead(404, { "Content-Type": mimeTypes[nfHTML.slice(getLastTextNum(nfHTML, "."))] || "application/octet-stream" })
             return res.end(req.streamFile)
         }
     }
-    res.writeHead(200, { "Content-Type": mimeTypes[req.url.slice(getLastTextNum(req.url, "."))] || mimeTypes["unkMimeType"] })
+    res.writeHead(200, { "Content-Type": mimeTypes[req.url.slice(getLastTextNum(req.url, "."))] || "application/octet-stream" })
     return res.end(req.streamFile)
 }).listen(80)
 
