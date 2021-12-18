@@ -1,5 +1,7 @@
 # HTTPServer
 An simple HTTP Server in Node JS!<br>
+# Feature
+- Listing directory (to turn listing directory on, edit http.js, find `listingDir = false` and change it to true)
 # How to use
 ## PC
 1. To download this source, press code -> download as zip
