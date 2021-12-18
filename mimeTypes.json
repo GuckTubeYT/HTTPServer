@@ -13,6 +13,5 @@
     "3gp": "video/3gpp",
     "woff": "font/woff",
     "ttf": "font/ttf",
-    "xml": "application/xml",
-    "unkMimeType": "application/octet-stream"
+    "xml": "application/xml"
 }
