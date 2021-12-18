@@ -1,6 +1,5 @@
 const fs = require("fs")
 const http = require("http");
-const { runInNewContext } = require("vm");
 
 var mimeTypes = require("./mimeTypes.json") // Mime Type
 var nfHTML = "404.html"; //Not Found HTML File
