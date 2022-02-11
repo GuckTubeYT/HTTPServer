@@ -11,7 +11,7 @@
     "jpeg": "image/jpeg",
     "jpg": "image/jpg",
     "svg": "image/svg+xml",
-    "ico": "image/x-icon"
+    "ico": "image/x-icon",
     "3gp": "video/3gpp",
     "woff": "font/woff",
     "ttf": "font/ttf",
